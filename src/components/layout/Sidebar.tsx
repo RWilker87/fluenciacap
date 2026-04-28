@@ -15,14 +15,16 @@ import {
 } from 'lucide-react';
 
 const adminLinks = [
-  { href: '/dashboard/admin', label: 'Visão Geral', icon: LayoutDashboard },
-  { href: '/dashboard/admin/schools', label: 'Escolas', icon: School },
-  { href: '/dashboard/admin/teachers', label: 'Professores', icon: Users },
+  { href: '/dashboard/admin', label: 'Visão Geral', icon: LayoutDashboard, exact: true },
+  { href: '/dashboard/admin/schools', label: 'Escolas', icon: School, exact: false },
+  { href: '/dashboard/admin/teachers', label: 'Professores', icon: Users, exact: false },
+  { href: '/dashboard/admin/classrooms', label: 'Turmas', icon: BookOpen, exact: false },
+  { href: '/dashboard/admin/students', label: 'Alunos', icon: GraduationCap, exact: false },
 ];
 
 const teacherLinks = [
-  { href: '/dashboard/teacher', label: 'Início', icon: LayoutDashboard },
-  { href: '/dashboard/teacher/classrooms', label: 'Minhas Turmas', icon: BookOpen },
+  { href: '/dashboard/teacher', label: 'Início', icon: LayoutDashboard, exact: true },
+  { href: '/dashboard/teacher/classrooms', label: 'Minhas Turmas', icon: BookOpen, exact: false },
 ];
 
 export function Sidebar() {
@@ -55,11 +57,8 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {links.map(({ href, label, icon: Icon }) => {
-          const isActive =
-            href === '/dashboard/admin' || href === '/dashboard/teacher'
-              ? pathname === href
-              : pathname.startsWith(href);
+        {links.map(({ href, label, icon: Icon, exact }) => {
+          const isActive = exact ? pathname === href : pathname.startsWith(href);
           return (
             <Link
               key={href}

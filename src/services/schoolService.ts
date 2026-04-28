@@ -31,6 +31,17 @@ export const schoolService = {
     return data as School;
   },
 
+  async updateSchool(id: string, name: string): Promise<School | null> {
+    const { data, error } = await supabase
+      .from('schools')
+      .update({ name })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) { console.error(error.message); return null; }
+    return data as School;
+  },
+
   async deleteSchool(id: string): Promise<boolean> {
     const { error } = await supabase
       .from('schools')

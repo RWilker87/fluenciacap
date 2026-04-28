@@ -2,77 +2,31 @@
 
 import { useState, useEffect } from 'react';
 import { use } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import Link from 'next/link';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
 import { Card, CardContent } from '@/components/ui/Card';
 import { classroomService } from '@/services/classroomService';
 import { studentService } from '@/services/studentService';
 import { Classroom, Student } from '@/types/user';
-import { GraduationCap, Plus, Trash2, X, ChevronLeft } from 'lucide-react';
+import { GraduationCap, ChevronLeft, PlayCircle } from 'lucide-react';
 
-const schema = z.object({
-  name: z.string().min(2, 'Nome do aluno é obrigatório'),
-});
-type FormValues = z.infer<typeof schema>;
-
-function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-xl bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b p-5">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600"><X className="h-5 w-5" /></button>
-        </div>
-        <div className="p-5">{children}</div>
-      </div>
-    </div>
-  );
-}
-
-function ClassroomDetailContent({ classroomId }: { classroomId: string }) {
+function ClassroomDetailTeacherContent({ classroomId }: { classroomId: string }) {
   const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormValues>({
-    resolver: zodResolver(schema),
-  });
-
-  const loadStudents = async () => {
-    const data = await studentService.getStudentsByClassroom(classroomId);
-    setStudents(data);
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    classroomService.getClassroom(classroomId).then(setClassroom);
-    loadStudents();
+    Promise.all([
+      classroomService.getClassroom(classroomId),
+      studentService.getStudentsByClassroom(classroomId),
+    ]).then(([cls, sts]) => {
+      setClassroom(cls);
+      setStudents(sts);
+      setLoading(false);
+    });
   }, [classroomId]);
-
-  const onSubmit = async (data: FormValues) => {
-    setFormError(null);
-    const student = await studentService.createStudent(data.name, classroomId);
-    if (!student) { setFormError('Erro ao adicionar aluno.'); return; }
-    reset();
-    setShowModal(false);
-    await loadStudents();
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Excluir este aluno?')) return;
-    setDeletingId(id);
-    await studentService.deleteStudent(id);
-    setDeletingId(null);
-    await loadStudents();
-  };
 
   return (
     <AppLayout title={classroom?.name ?? 'Turma'}>
@@ -86,25 +40,25 @@ function ClassroomDetailContent({ classroomId }: { classroomId: string }) {
           Voltar para Turmas
         </Link>
 
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">{classroom?.name}</h2>
-            <p className="text-sm text-gray-500">{students.length} aluno(s) cadastrado(s)</p>
-          </div>
-          <Button onClick={() => setShowModal(true)}>
-            <Plus className="h-4 w-4 mr-2" /> Adicionar Aluno
-          </Button>
+        {/* Info da turma */}
+        <div className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+          <p className="text-sm opacity-80 mb-1">Turma</p>
+          <h2 className="text-2xl font-bold">{classroom?.name ?? '...'}</h2>
+          <p className="mt-1 text-sm opacity-80">{students.length} aluno(s) matriculado(s)</p>
         </div>
 
-        {/* Lista de alunos */}
+        {/* Lista de alunos — somente leitura */}
         <Card>
           <CardContent className="p-0">
-            {students.length === 0 ? (
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+              </div>
+            ) : students.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <GraduationCap className="h-14 w-14 text-gray-200 mb-4" />
-                <p className="font-medium text-gray-500">Nenhum aluno cadastrado</p>
-                <p className="text-sm text-gray-400 mt-1">Clique em "Adicionar Aluno" para começar</p>
+                <p className="font-medium text-gray-500">Nenhum aluno nesta turma</p>
+                <p className="text-sm text-gray-400 mt-1">Solicite ao administrador para cadastrar alunos.</p>
               </div>
             ) : (
               <div className="divide-y">
@@ -116,44 +70,33 @@ function ClassroomDetailContent({ classroomId }: { classroomId: string }) {
                       </span>
                       <p className="font-medium text-gray-900">{student.name}</p>
                     </div>
-                    <button
-                      onClick={() => handleDelete(student.id)}
-                      disabled={deletingId === student.id}
-                      className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50"
+                    {/* Botão futuro: Iniciar Avaliação */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled
+                      className="text-xs gap-1.5 opacity-60 cursor-not-allowed"
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                      <PlayCircle className="h-3.5 w-3.5" />
+                      Iniciar Avaliação
+                    </Button>
                   </div>
                 ))}
               </div>
             )}
           </CardContent>
         </Card>
-      </div>
 
-      {showModal && (
-        <Modal title="Adicionar Aluno" onClose={() => { setShowModal(false); reset(); }}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="student-name">Nome do Aluno</Label>
-              <Input id="student-name" placeholder="Nome completo" {...register('name')} />
-              {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
-            </div>
-            {formError && <p className="text-sm text-red-500">{formError}</p>}
-            <div className="flex gap-3 justify-end pt-2">
-              <Button type="button" variant="outline" onClick={() => { setShowModal(false); reset(); }}>Cancelar</Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Adicionando...' : 'Adicionar'}
-              </Button>
-            </div>
-          </form>
-        </Modal>
-      )}
+        {/* Aviso informativo */}
+        <div className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-700">
+          💡 O botão <strong>"Iniciar Avaliação"</strong> será habilitado na próxima etapa do sistema, quando o módulo de avaliação de fluência leitora for implementado.
+        </div>
+      </div>
     </AppLayout>
   );
 }
 
-export default function ClassroomDetailPage({
+export default function TeacherClassroomDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -161,7 +104,7 @@ export default function ClassroomDetailPage({
   const { id } = use(params);
   return (
     <ProtectedRoute requiredRole="teacher">
-      <ClassroomDetailContent classroomId={id} />
+      <ClassroomDetailTeacherContent classroomId={id} />
     </ProtectedRoute>
   );
 }
