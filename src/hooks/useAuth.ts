@@ -68,7 +68,10 @@ export function useAuth(requireAuth = false, requiredRole?: Role): UseAuthReturn
     }
 
     if (requiredRole && profile && profile.role !== requiredRole) {
-      router.push('/unauthorized');
+      if (profile.role === 'admin') router.push('/dashboard/admin');
+      else if (profile.role === 'gestor') router.push('/dashboard/gestor');
+      else if (profile.role === 'coordenador') router.push('/dashboard/coordenador');
+      else router.push('/dashboard/teacher');
     }
   }, [user, profile, loading, requireAuth, requiredRole, router]);
 

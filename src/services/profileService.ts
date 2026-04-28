@@ -19,7 +19,7 @@ export const profileService = {
   async createProfile(
     userId: string,
     name: string,
-    role: Role = 'teacher',
+    role: Role = 'professor',
     schoolId?: string
   ): Promise<Profile | null> {
     const { data, error } = await supabase

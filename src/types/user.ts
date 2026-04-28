@@ -1,4 +1,4 @@
-export type Role = 'admin' | 'teacher';
+export type Role = 'admin' | 'gestor' | 'coordenador' | 'professor';
 
 export interface AppUser {
   id: string;
@@ -8,6 +8,7 @@ export interface AppUser {
 export interface Profile {
   id: string;
   name: string | null;
+  cpf: string | null;
   role: Role;
   school_id: string | null;
   created_at: string;
@@ -30,6 +31,13 @@ export interface Classroom {
 export interface Student {
   id: string;
   name: string;
+  classroom_id: string;
+  created_at: string;
+}
+
+export interface CoordinatorClassroom {
+  id: string;
+  coordinator_id: string;
   classroom_id: string;
   created_at: string;
 }

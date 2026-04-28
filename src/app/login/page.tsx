@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/Label';
 import Link from 'next/link';
 
 const loginSchema = z.object({
-  email: z.string().email('E-mail inválido'),
+  identifier: z.string().min(3, 'Insira seu CPF ou E-mail'),
   password: z.string().min(1, 'A senha é obrigatória'),
 });
 
@@ -28,30 +28,52 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormValues) => {
+    setError(null);
     try {
-      setError(null);
-      await authService.login(data.email, data.password);
+      // Se tiver '@', trata como email. Se não, trata como CPF e converte para email interno.
+      const isEmail = data.identifier.includes('@');
+      const systemEmail = isEmail 
+        ? data.identifier 
+        : `${data.identifier.replace(/\D/g, '')}@lexfluencia.com`;
+        
+      await authService.login(systemEmail, data.password);
       router.push('/dashboard');
     } catch (err: any) {
-      setError('Credenciais inválidas. Verifique seu e-mail e senha.');
+      console.error('Erro no login:', err);
+      setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md shadow-lg border-t-4 border-t-blue-600">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Bem-vindo(a) de volta</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight text-gray-900">
+            Lexfluência
+          </CardTitle>
           <CardDescription>
-            Insira suas credenciais para acessar o Lexfluência
+            Acesso ao sistema educacional
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            {error && (
+              <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
-              <Label htmlFor="email">E-mail</Label>
-              <Input id="email" type="email" placeholder="nome@escola.com.br" {...register('email')} />
-              {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+              <Label htmlFor="identifier">CPF ou E-mail</Label>
+              <Input
+                id="identifier"
+                type="text"
+                placeholder="Seu CPF ou E-mail cadastrado"
+                {...register('identifier')}
+                className={errors.identifier ? 'border-red-500 focus-visible:ring-red-500' : ''}
+              />
+              {errors.identifier && (
+                <p className="text-xs text-red-500">{errors.identifier.message}</p>
+              )}
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -66,8 +88,8 @@ export default function LoginPage() {
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? 'Entrando...' : 'Entrar'}
             </Button>
-          </form>
-        </CardContent>
+          </CardContent>
+        </form>
         <CardFooter className="flex flex-col items-center justify-center space-y-2 text-sm">
           <div className="text-gray-500">
             Não tem uma conta?{' '}

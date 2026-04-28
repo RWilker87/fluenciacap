@@ -1,7 +1,6 @@
 -- ============================================================
--- LEXFLUÊNCIA - Script Completo de Banco de Dados (v2)
--- Execute este script completo no SQL Editor do Supabase
--- Substitui a versão anterior
+-- LEXFLUÊNCIA - Script Completo de Banco de Dados (v3)
+-- Atualizado para modelo de 4 roles: admin, gestor, coordenador, professor
 -- ============================================================
 
 -- 1. Tabela de escolas
@@ -15,7 +14,8 @@ CREATE TABLE IF NOT EXISTS public.schools (
 CREATE TABLE IF NOT EXISTS public.profiles (
   id         UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   name       TEXT,
-  role       TEXT NOT NULL DEFAULT 'teacher' CHECK (role IN ('admin', 'teacher')),
+  cpf        TEXT UNIQUE,
+  role       TEXT NOT NULL DEFAULT 'professor' CHECK (role IN ('admin', 'gestor', 'coordenador', 'professor')),
   school_id  UUID REFERENCES public.schools(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ DEFAULT now()
 );
@@ -37,29 +37,36 @@ CREATE TABLE IF NOT EXISTS public.students (
   created_at   TIMESTAMPTZ DEFAULT now()
 );
 
+-- 5. Tabela pivô para Coordenadores x Turmas
+CREATE TABLE IF NOT EXISTS public.coordinator_classrooms (
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  coordinator_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  classroom_id   UUID NOT NULL REFERENCES public.classrooms(id) ON DELETE CASCADE,
+  created_at     TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(coordinator_id, classroom_id)
+);
+
 -- ============================================================
 -- DESABILITAR RLS (modo desenvolvimento)
--- Reativar com políticas corretas antes da produção
 -- ============================================================
-
-ALTER TABLE public.schools    DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.profiles   DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.schools DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.profiles DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.classrooms DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.students   DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.students DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.coordinator_classrooms DISABLE ROW LEVEL SECURITY;
 
 -- ============================================================
 -- GRANTS de permissão
 -- ============================================================
-
-GRANT ALL ON public.profiles   TO authenticated, anon;
-GRANT ALL ON public.schools    TO authenticated, anon;
+GRANT ALL ON public.profiles TO authenticated, anon;
+GRANT ALL ON public.schools TO authenticated, anon;
 GRANT ALL ON public.classrooms TO authenticated, anon;
-GRANT ALL ON public.students   TO authenticated, anon;
+GRANT ALL ON public.students TO authenticated, anon;
+GRANT ALL ON public.coordinator_classrooms TO authenticated, anon;
 
 -- ============================================================
 -- TRIGGER: criar profile automaticamente ao registrar usuário
 -- ============================================================
-
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -67,7 +74,7 @@ BEGIN
   VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data->>'name', NEW.email),
-    'teacher'
+    'professor'
   )
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
@@ -80,29 +87,18 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- ============================================================
--- ADICIONAR teacher_id em classrooms se já existir sem a coluna
+-- SCRIPTS DE MIGRAÇÃO (CASO AS TABELAS JÁ EXISTAM)
 -- ============================================================
-
 DO $$
 BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public'
-      AND table_name = 'classrooms'
-      AND column_name = 'teacher_id'
-  ) THEN
-    ALTER TABLE public.classrooms
-      ADD COLUMN teacher_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE;
+  -- Adicionar coluna cpf se não existir
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'profiles' AND column_name = 'cpf') THEN
+    ALTER TABLE public.profiles ADD COLUMN cpf TEXT UNIQUE;
   END IF;
+  
+  -- Atualizar a constraint de role
+  -- Removemos e recriamos a constraint
+  ALTER TABLE public.profiles DROP CONSTRAINT IF EXISTS profiles_role_check;
+  ALTER TABLE public.profiles ADD CONSTRAINT profiles_role_check CHECK (role IN ('admin', 'gestor', 'coordenador', 'professor'));
 END;
 $$;
-
--- ============================================================
--- PROMOVER USUÁRIO PARA ADMIN
--- Substitua o UUID abaixo pelo UUID real do seu usuário
--- Encontre em: Authentication > Users no painel do Supabase
--- ============================================================
-
--- INSERT INTO public.profiles (id, name, role, school_id)
--- VALUES ('SEU-UUID-AQUI', 'Seu Nome', 'admin', NULL)
--- ON CONFLICT (id) DO UPDATE SET role = 'admin', school_id = NULL;

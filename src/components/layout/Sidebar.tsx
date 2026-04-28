@@ -17,9 +17,20 @@ import {
 const adminLinks = [
   { href: '/dashboard/admin', label: 'Visão Geral', icon: LayoutDashboard, exact: true },
   { href: '/dashboard/admin/schools', label: 'Escolas', icon: School, exact: false },
-  { href: '/dashboard/admin/teachers', label: 'Professores', icon: Users, exact: false },
+  { href: '/dashboard/admin/users', label: 'Usuários', icon: Users, exact: false },
   { href: '/dashboard/admin/classrooms', label: 'Turmas', icon: BookOpen, exact: false },
   { href: '/dashboard/admin/students', label: 'Alunos', icon: GraduationCap, exact: false },
+];
+
+const gestorLinks = [
+  { href: '/dashboard/gestor', label: 'Visão Geral', icon: LayoutDashboard, exact: true },
+  { href: '/dashboard/gestor/classrooms', label: 'Turmas da Escola', icon: BookOpen, exact: false },
+  { href: '/dashboard/gestor/students', label: 'Alunos da Escola', icon: GraduationCap, exact: false },
+];
+
+const coordenadorLinks = [
+  { href: '/dashboard/coordenador', label: 'Início', icon: LayoutDashboard, exact: true },
+  { href: '/dashboard/coordenador/classrooms', label: 'Minhas Turmas', icon: BookOpen, exact: false },
 ];
 
 const teacherLinks = [
@@ -32,7 +43,10 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const links = role === 'admin' ? adminLinks : teacherLinks;
+  let links = teacherLinks;
+  if (role === 'admin') links = adminLinks;
+  else if (role === 'gestor') links = gestorLinks;
+  else if (role === 'coordenador') links = coordenadorLinks;
 
   const handleLogout = async () => {
     await authService.logout();
