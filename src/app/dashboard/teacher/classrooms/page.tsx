@@ -75,7 +75,7 @@ function ClassroomsTeacherContent() {
 
 export default function TeacherClassroomsPage() {
   return (
-    <ProtectedRoute requiredRole="teacher">
+    <ProtectedRoute requiredRole="professor">
       <ClassroomsTeacherContent />
     </ProtectedRoute>
   );

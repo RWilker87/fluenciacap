@@ -108,7 +108,7 @@ function TeacherDashboardContent() {
 
 export default function TeacherDashboardPage() {
   return (
-    <ProtectedRoute requiredRole="teacher">
+    <ProtectedRoute requiredRole="professor">
       <TeacherDashboardContent />
     </ProtectedRoute>
   );

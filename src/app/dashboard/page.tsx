@@ -13,8 +13,9 @@ export default function DashboardPage() {
     if (loading) return;
     if (!user) return; // useAuth já cuida do redirect para /login
     if (role === 'admin') router.replace('/dashboard/admin');
-    else if (role === 'teacher') router.replace('/dashboard/teacher');
-    // se role for null (perfil não criado), cai no estado de erro abaixo
+    else if (role === 'gestor') router.replace('/dashboard/gestor');
+    else if (role === 'coordenador') router.replace('/dashboard/coordenador');
+    else if (role === 'professor' || role === 'teacher') router.replace('/dashboard/teacher');
   }, [role, loading, router, user]);
 
   // Perfil não encontrado no banco

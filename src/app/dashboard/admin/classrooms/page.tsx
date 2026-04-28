@@ -62,7 +62,7 @@ function ClassroomsAdminContent() {
     const [cls, sch, tch] = await Promise.all([
       classroomService.getAllClassrooms(),
       schoolService.getAllSchools(),
-      userService.getAllTeachers(),
+      userService.getUsersByRole('professor'),
     ]);
     setClassrooms(cls);
     setSchools(sch);

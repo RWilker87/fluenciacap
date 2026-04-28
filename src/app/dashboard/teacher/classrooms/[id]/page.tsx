@@ -103,7 +103,7 @@ export default function TeacherClassroomDetailPage({
 }) {
   const { id } = use(params);
   return (
-    <ProtectedRoute requiredRole="teacher">
+    <ProtectedRoute requiredRole="professor">
       <ClassroomDetailTeacherContent classroomId={id} />
     </ProtectedRoute>
   );

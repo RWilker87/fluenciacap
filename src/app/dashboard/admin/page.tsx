@@ -14,11 +14,11 @@ import Link from 'next/link';
 function AdminDashboardContent() {
   const { profile } = useAuth();
   const [schoolCount, setSchoolCount] = useState(0);
-  const [teacherCount, setTeacherCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
 
   useEffect(() => {
     schoolService.getAllSchools().then((s) => setSchoolCount(s.length));
-    userService.getAllTeachers().then((t) => setTeacherCount(t.length));
+    userService.getAllUsers().then((u) => setUserCount(u.filter(x => x.role !== 'admin').length));
   }, []);
 
   return (
@@ -49,13 +49,13 @@ function AdminDashboardContent() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base font-medium text-gray-500">
-              <Users className="h-4 w-4" /> Professores Cadastrados
+              <Users className="h-4 w-4" /> Usuários Cadastrados
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-gray-900">{teacherCount}</p>
-            <Link href="/dashboard/admin/teachers" className="text-xs text-blue-600 hover:underline mt-2 inline-block">
-              Gerenciar professores →
+            <p className="text-4xl font-bold text-gray-900">{userCount}</p>
+            <Link href="/dashboard/admin/users" className="text-xs text-blue-600 hover:underline mt-2 inline-block">
+              Gerenciar usuários →
             </Link>
           </CardContent>
         </Card>
@@ -70,9 +70,9 @@ function AdminDashboardContent() {
               <Plus className="h-4 w-4 mr-2" /> Nova Escola
             </Button>
           </Link>
-          <Link href="/dashboard/admin/teachers">
+          <Link href="/dashboard/admin/users">
             <Button variant="outline">
-              <Plus className="h-4 w-4 mr-2" /> Novo Professor
+              <Plus className="h-4 w-4 mr-2" /> Novo Usuário
             </Button>
           </Link>
         </div>
