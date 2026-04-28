@@ -32,7 +32,7 @@ export default function DashboardPage() {
           <p className="text-xs text-gray-400 font-mono bg-gray-100 rounded p-2">
             ID: {user.id}
           </p>
-          <Link href="/login" className="inline-block text-sm text-blue-600 hover:underline">
+          <Link href="/login" className="inline-block text-sm text-primary-800 hover:underline">
             Sair e tentar novamente
           </Link>
         </div>
@@ -43,7 +43,7 @@ export default function DashboardPage() {
   return (
     <div className="flex h-screen items-center justify-center bg-gray-50">
       <div className="flex flex-col items-center gap-3">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-800 border-t-transparent" />
         <p className="text-sm text-gray-500">Redirecionando...</p>
       </div>
     </div>

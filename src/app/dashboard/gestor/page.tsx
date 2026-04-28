@@ -34,7 +34,7 @@ function GestorDashboardContent() {
 
   return (
     <AppLayout title="Visão Geral">
-      <div className="mb-6 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 p-6 text-white">
+      <div className="mb-6 rounded-xl bg-gradient-to-r from-secondary-600 to-secondary-800 p-6 text-white">
         <p className="text-sm font-medium opacity-80">Bem-vindo(a) Gestor(a),</p>
         <h2 className="text-2xl font-bold">{profile?.name ?? '...'}</h2>
         {school && <p className="mt-1 text-sm opacity-80">📍 {school.name}</p>}

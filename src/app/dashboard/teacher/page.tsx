@@ -29,7 +29,7 @@ function TeacherDashboardContent() {
   return (
     <AppLayout title="Início">
       {/* Boas-vindas */}
-      <div className="mb-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+      <div className="mb-6 rounded-xl bg-gradient-to-r from-gold-600 to-gold-700 p-6 text-white">
         <p className="text-sm font-medium opacity-80">Bem-vindo(a),</p>
         <h2 className="text-2xl font-bold">{profile?.name ?? '...'}</h2>
         {school && <p className="mt-1 text-sm opacity-80">📍 {school.name}</p>}
@@ -45,7 +45,7 @@ function TeacherDashboardContent() {
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold text-gray-900">{classrooms.length}</p>
-            <Link href="/dashboard/teacher/classrooms" className="text-xs text-blue-600 hover:underline mt-2 inline-block">
+            <Link href="/dashboard/teacher/classrooms" className="text-xs text-primary-800 hover:underline mt-2 inline-block">
               Gerenciar turmas →
             </Link>
           </CardContent>
@@ -69,7 +69,7 @@ function TeacherDashboardContent() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">Turmas Recentes</h3>
-            <Link href="/dashboard/teacher/classrooms" className="text-xs text-blue-600 hover:underline">Ver todas</Link>
+            <Link href="/dashboard/teacher/classrooms" className="text-xs text-primary-800 hover:underline">Ver todas</Link>
           </div>
           <div className="space-y-2">
             {classrooms.slice(0, 4).map((c) => (
@@ -79,8 +79,8 @@ function TeacherDashboardContent() {
                 className="flex items-center justify-between rounded-lg border bg-white px-4 py-3 hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100">
-                    <BookOpen className="h-4 w-4 text-blue-600" />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100">
+                    <BookOpen className="h-4 w-4 text-primary-800" />
                   </div>
                   <span className="font-medium text-gray-900 text-sm">{c.name}</span>
                 </div>

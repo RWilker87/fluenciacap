@@ -30,7 +30,7 @@ function ClassroomsTeacherContent() {
 
         {loading ? (
           <div className="flex justify-center py-16">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary-800 border-t-transparent" />
           </div>
         ) : classrooms.length === 0 ? (
           <Card>
@@ -48,19 +48,19 @@ function ClassroomsTeacherContent() {
               <Link
                 key={classroom.id}
                 href={`/dashboard/teacher/classrooms/${classroom.id}`}
-                className="group rounded-xl border bg-white p-5 shadow-sm hover:shadow-md hover:border-blue-200 transition-all"
+                className="group rounded-xl border bg-white p-5 shadow-sm hover:shadow-md hover:border-primary-300 transition-all"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 group-hover:bg-blue-200 transition-colors">
-                    <BookOpen className="h-5 w-5 text-blue-600" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 group-hover:bg-primary-200 transition-colors">
+                    <BookOpen className="h-5 w-5 text-primary-800" />
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-300 group-hover:text-blue-500 transition-colors mt-1" />
+                  <ChevronRight className="h-4 w-4 text-gray-300 group-hover:text-primary-700 transition-colors mt-1" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1">{classroom.name}</h3>
                 <p className="text-xs text-gray-400">
                   Criada em {new Date(classroom.created_at).toLocaleDateString('pt-BR')}
                 </p>
-                <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-blue-600">
+                <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-primary-800">
                   <Users className="h-3.5 w-3.5" />
                   Ver alunos
                 </div>

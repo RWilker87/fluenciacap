@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import Link from 'next/link';
+import Image from 'next/image';
+import logo from '@/assets/logo.png';
 
 const loginSchema = z.object({
   identifier: z.string().min(3, 'Insira seu CPF ou E-mail'),
@@ -46,10 +48,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md shadow-lg border-t-4 border-t-blue-600">
-        <CardHeader className="space-y-1 text-center">
+      <Card className="w-full max-w-md shadow-lg border-t-4 border-t-primary-800">
+        <CardHeader className="space-y-1 text-center flex flex-col items-center pb-6">
+          <Image src={logo} alt="Logo fluênciaCAP" width={200} height={80} className="w-auto h-16 mb-4 object-contain" />
           <CardTitle className="text-2xl font-bold tracking-tight text-gray-900">
-            Lexfluência
+            fluênciaCAP
           </CardTitle>
           <CardDescription>
             Acesso ao sistema educacional
@@ -93,7 +96,7 @@ export default function LoginPage() {
         <CardFooter className="flex flex-col items-center justify-center space-y-2 text-sm">
           <div className="text-gray-500">
             Não tem uma conta?{' '}
-            <Link href="/register" className="text-blue-600 hover:underline">
+            <Link href="/register" className="text-primary-800 hover:underline">
               Cadastre-se
             </Link>
           </div>

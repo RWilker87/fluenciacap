@@ -8,8 +8,40 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  
+  --color-primary-50: #FDF2F2;
+  --color-primary-100: #FDE8E8;
+  --color-primary-200: #FBD5D5;
+  --color-primary-300: #F8B4B4;
+  --color-primary-400: #F98080;
+  --color-primary-500: #F05252;
+  --color-primary-600: #E02424;
+  --color-primary-700: #C81E1E;
+  --color-primary-800: #9B1C1C;
+  --color-primary-900: #7A1616;
+
+  --color-secondary-50: #FFF8F1;
+  --color-secondary-100: #FEECDC;
+  --color-secondary-200: #FCD9BD;
+  --color-secondary-300: #FDBA74;
+  --color-secondary-400: #FB923C;
+  --color-secondary-500: #F97316;
+  --color-secondary-600: #EA580C;
+  --color-secondary-700: #C2410C;
+  --color-secondary-800: #9A3412;
+  --color-secondary-900: #7C2D12;
+
+  --color-gold-50: #FFFBEB;
+  --color-gold-100: #FEF3C7;
+  --color-gold-200: #FDE68A;
+  --color-gold-300: #FCD34D;
+  --color-gold-400: #FBBF24;
+  --color-gold-500: #F59E0B;
+  --color-gold-600: #D97706;
+  --color-gold-700: #B45309;
+  --color-gold-800: #92400E;
+  --color-gold-900: #78350F;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +54,4 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

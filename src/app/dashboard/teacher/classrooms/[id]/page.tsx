@@ -41,7 +41,7 @@ function ClassroomDetailTeacherContent({ classroomId }: { classroomId: string })
         </Link>
 
         {/* Info da turma */}
-        <div className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+        <div className="rounded-xl bg-gradient-to-r from-gold-600 to-gold-700 p-6 text-white">
           <p className="text-sm opacity-80 mb-1">Turma</p>
           <h2 className="text-2xl font-bold">{classroom?.name ?? '...'}</h2>
           <p className="mt-1 text-sm opacity-80">{students.length} aluno(s) matriculado(s)</p>
@@ -52,7 +52,7 @@ function ClassroomDetailTeacherContent({ classroomId }: { classroomId: string })
           <CardContent className="p-0">
             {loading ? (
               <div className="flex justify-center py-12">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary-800 border-t-transparent" />
               </div>
             ) : students.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -88,7 +88,7 @@ function ClassroomDetailTeacherContent({ classroomId }: { classroomId: string })
         </Card>
 
         {/* Aviso informativo */}
-        <div className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-700">
+        <div className="rounded-lg border border-primary-100 bg-primary-50 px-4 py-3 text-sm text-primary-900">
           💡 O botão <strong>"Iniciar Avaliação"</strong> será habilitado na próxima etapa do sistema, quando o módulo de avaliação de fluência leitora for implementado.
         </div>
       </div>

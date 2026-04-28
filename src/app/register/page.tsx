@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import Link from 'next/link';
+import Image from 'next/image';
+import logo from '@/assets/logo.png';
 
 const registerSchema = z.object({
   name: z.string().min(3, 'O nome deve ter pelo menos 3 caracteres'),
@@ -64,10 +66,11 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
+        <CardHeader className="space-y-1 text-center flex flex-col items-center pb-6">
+          <Image src={logo} alt="Logo fluênciaCAP" width={200} height={80} className="w-auto h-16 mb-4 object-contain" />
           <CardTitle className="text-2xl font-bold">Criar Conta</CardTitle>
           <CardDescription>
-            Insira seus dados para criar sua conta no Lexfluência
+            Insira seus dados para criar sua conta no fluênciaCAP
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -103,7 +106,7 @@ export default function RegisterPage() {
         <CardFooter className="flex flex-col items-center justify-center space-y-2 text-sm">
           <div className="text-gray-500">
             Já possui uma conta?{' '}
-            <Link href="/login" className="text-blue-600 hover:underline">
+            <Link href="/login" className="text-primary-800 hover:underline">
               Fazer login
             </Link>
           </div>

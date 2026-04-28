@@ -161,11 +161,11 @@ function UsersAdminContent() {
       <div className="space-y-6">
         <div className="flex flex-wrap gap-3 items-center justify-between">
           <div className="flex flex-wrap gap-2 items-center">
-            <select value={filterSchool} onChange={(e) => setFilterSchool(e.target.value)} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select value={filterSchool} onChange={(e) => setFilterSchool(e.target.value)} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700">
               <option value="">Todas as escolas</option>
               {schools.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
-            <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700">
               <option value="">Todos os tipos</option>
               <option value="gestor">Gestor</option>
               <option value="coordenador">Coordenador</option>
@@ -188,7 +188,7 @@ function UsersAdminContent() {
                 {filtered.map((user) => (
                   <div key={user.id} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center gap-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-700 font-semibold text-sm">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 text-primary-900 font-semibold text-sm">
                         {(user.name ?? 'U').charAt(0).toUpperCase()}
                       </div>
                       <div>
@@ -202,7 +202,7 @@ function UsersAdminContent() {
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(user)} className="p-2 text-gray-400 hover:text-blue-600 rounded">
+                      <button onClick={() => openEdit(user)} className="p-2 text-gray-400 hover:text-primary-800 rounded">
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button onClick={() => handleDelete(user)} className="p-2 text-gray-400 hover:text-red-600 rounded">
@@ -237,7 +237,7 @@ function UsersAdminContent() {
             
             <div className="space-y-1.5">
               <Label>Tipo de Perfil</Label>
-              <select {...form.register('role')} className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select {...form.register('role')} className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700">
                 <option value="professor">Professor</option>
                 <option value="coordenador">Coordenador</option>
                 <option value="gestor">Gestor</option>
@@ -246,7 +246,7 @@ function UsersAdminContent() {
 
             <div className="space-y-1.5">
               <Label>Escola</Label>
-              <select {...form.register('schoolId')} className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select {...form.register('schoolId')} className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700">
                 <option value="">Selecione...</option>
                 {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
               </select>

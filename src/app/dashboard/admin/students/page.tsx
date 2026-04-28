@@ -121,7 +121,7 @@ function StudentsAdminContent() {
       </div>
       <div className="space-y-1.5">
         <Label>Turma</Label>
-        <select {...form.register('classroomId')} className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <select {...form.register('classroomId')} className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700">
           <option value="">Selecione uma turma...</option>
           {classrooms.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -135,11 +135,11 @@ function StudentsAdminContent() {
       <div className="space-y-6">
         <div className="flex flex-wrap gap-3 items-center justify-between">
           <div className="flex flex-wrap gap-2 items-center">
-            <select value={filterSchool} onChange={(e) => { setFilterSchool(e.target.value); setFilterClassroom(''); }} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select value={filterSchool} onChange={(e) => { setFilterSchool(e.target.value); setFilterClassroom(''); }} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700">
               <option value="">Todas as escolas</option>
               {schools.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
-            <select value={filterClassroom} onChange={(e) => setFilterClassroom(e.target.value)} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select value={filterClassroom} onChange={(e) => setFilterClassroom(e.target.value)} className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700">
               <option value="">Todas as turmas</option>
               {filteredClassrooms.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
@@ -170,7 +170,7 @@ function StudentsAdminContent() {
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(student)} className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                      <button onClick={() => openEdit(student)} className="p-2 rounded-lg text-gray-400 hover:text-primary-800 hover:bg-primary-50 transition-colors">
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button onClick={() => handleDelete(student.id, student.name)} disabled={deletingId === student.id} className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50">

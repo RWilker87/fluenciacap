@@ -24,7 +24,7 @@ function AdminDashboardContent() {
   return (
     <AppLayout title="Visão Geral">
       {/* Boas-vindas */}
-      <div className="mb-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+      <div className="mb-6 rounded-xl bg-gradient-to-r from-primary-800 to-primary-900 p-6 text-white">
         <p className="text-sm font-medium opacity-80">Bem-vindo(a),</p>
         <h2 className="text-2xl font-bold">{profile?.name ?? 'Administrador'}</h2>
         <p className="mt-1 text-sm opacity-80">Secretaria de Educação — Painel Administrativo</p>
@@ -40,7 +40,7 @@ function AdminDashboardContent() {
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold text-gray-900">{schoolCount}</p>
-            <Link href="/dashboard/admin/schools" className="text-xs text-blue-600 hover:underline mt-2 inline-block">
+            <Link href="/dashboard/admin/schools" className="text-xs text-primary-800 hover:underline mt-2 inline-block">
               Gerenciar escolas →
             </Link>
           </CardContent>
@@ -54,7 +54,7 @@ function AdminDashboardContent() {
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold text-gray-900">{userCount}</p>
-            <Link href="/dashboard/admin/users" className="text-xs text-blue-600 hover:underline mt-2 inline-block">
+            <Link href="/dashboard/admin/users" className="text-xs text-primary-800 hover:underline mt-2 inline-block">
               Gerenciar usuários →
             </Link>
           </CardContent>

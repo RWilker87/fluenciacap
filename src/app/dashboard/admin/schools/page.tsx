@@ -101,8 +101,8 @@ function SchoolsContent() {
                 {schools.map((school) => (
                   <div key={school.id} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100">
-                        <SchoolIcon className="h-4 w-4 text-blue-600" />
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-100">
+                        <SchoolIcon className="h-4 w-4 text-primary-800" />
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">{school.name}</p>
@@ -114,7 +114,7 @@ function SchoolsContent() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => openEdit(school)}
-                        className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                        className="p-2 rounded-lg text-gray-400 hover:text-primary-800 hover:bg-primary-50 transition-colors"
                         title="Editar"
                       >
                         <Pencil className="h-4 w-4" />

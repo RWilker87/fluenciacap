@@ -22,7 +22,7 @@ function CoordenadorDashboardContent() {
 
   return (
     <AppLayout title="Início">
-      <div className="mb-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+      <div className="mb-6 rounded-xl bg-gradient-to-r from-secondary-600 to-secondary-800 p-6 text-white">
         <p className="text-sm font-medium opacity-80">Bem-vindo(a) Coordenador(a),</p>
         <h2 className="text-2xl font-bold">{profile?.name ?? '...'}</h2>
       </div>

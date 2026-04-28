@@ -117,7 +117,7 @@ function ClassroomsAdminContent() {
             <select
               value={filterSchool}
               onChange={(e) => { setFilterSchool(e.target.value); setFilterTeacher(''); }}
-              className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700"
             >
               <option value="">Todas as escolas</option>
               {schools.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -125,7 +125,7 @@ function ClassroomsAdminContent() {
             <select
               value={filterTeacher}
               onChange={(e) => setFilterTeacher(e.target.value)}
-              className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700"
             >
               <option value="">Todos os professores</option>
               {(filterSchool ? teachers.filter((t) => t.school_id === filterSchool) : teachers).map((t) => (
@@ -152,8 +152,8 @@ function ClassroomsAdminContent() {
                 {filtered.map((classroom) => (
                   <div key={classroom.id} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100">
-                        <BookOpen className="h-4 w-4 text-blue-600" />
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-100">
+                        <BookOpen className="h-4 w-4 text-primary-800" />
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">{classroom.name}</p>
@@ -197,7 +197,7 @@ function ClassroomsAdminContent() {
               <select
                 id="cr-school"
                 {...register('schoolId')}
-                className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700"
               >
                 <option value="">Selecione uma escola...</option>
                 {schools.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -209,7 +209,7 @@ function ClassroomsAdminContent() {
               <select
                 id="cr-teacher"
                 {...register('teacherId')}
-                className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-700"
               >
                 <option value="">Selecione um professor...</option>
                 {filteredTeachers.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}

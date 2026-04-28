@@ -13,6 +13,8 @@ import {
   LogOut,
   GraduationCap,
 } from 'lucide-react';
+import Image from 'next/image';
+import logo from '@/assets/logo.png';
 
 const adminLinks = [
   { href: '/dashboard/admin', label: 'Visão Geral', icon: LayoutDashboard, exact: true },
@@ -56,9 +58,9 @@ export function Sidebar() {
   return (
     <aside className="flex h-screen w-64 flex-col bg-slate-900 text-white flex-shrink-0">
       {/* Logo */}
-      <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-700">
-        <BookOpen className="h-6 w-6 text-blue-400" />
-        <span className="text-lg font-bold tracking-tight">Lexfluência</span>
+      <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-700">
+        <Image src={logo} alt="Logo fluênciaCAP" width={150} height={50} className="w-auto h-8 object-contain" />
+        <span className="text-lg font-bold tracking-tight">fluênciaCAP</span>
       </div>
 
       {/* User info */}
@@ -79,7 +81,7 @@ export function Sidebar() {
               href={href}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-primary-800 text-white'
                   : 'text-slate-300 hover:bg-slate-800 hover:text-white'
               }`}
             >

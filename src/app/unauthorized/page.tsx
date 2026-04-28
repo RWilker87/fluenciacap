@@ -9,7 +9,7 @@ export default function UnauthorizedPage() {
         </p>
         <a
           href="/dashboard"
-          className="inline-block rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+          className="inline-block rounded-lg bg-primary-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-900 transition-colors"
         >
           Voltar ao início
         </a>
