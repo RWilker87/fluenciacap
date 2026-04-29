@@ -1,25 +1,70 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { LoadingScreen } from '@/components/ui/LoadingScreen';
+import { Role } from '@/types/user';
 import Link from 'next/link';
 
+const ROLE_DASHBOARD_MAP: Record<Role, string> = {
+  admin: '/dashboard/admin',
+  gestor: '/dashboard/gestor',
+  coordenador: '/dashboard/coordenador',
+  professor: '/dashboard/teacher',
+};
+
 export default function DashboardPage() {
-  const { user, role, loading } = useAuth(true);
+  const { user, profile, role, initializing, loading, error } = useAuthContext();
   const router = useRouter();
+  const hasRedirected = useRef(false);
 
   useEffect(() => {
-    if (loading) return;
-    if (!user) return; // useAuth já cuida do redirect para /login
-    if (role === 'admin') router.replace('/dashboard/admin');
-    else if (role === 'gestor') router.replace('/dashboard/gestor');
-    else if (role === 'coordenador') router.replace('/dashboard/coordenador');
-    else if (role === 'professor' || role === 'teacher') router.replace('/dashboard/teacher');
-  }, [role, loading, router, user]);
+    if (initializing || loading) return;
+
+    // Not authenticated → login
+    if (!user) {
+      if (!hasRedirected.current) {
+        hasRedirected.current = true;
+        router.replace('/login');
+      }
+      return;
+    }
+
+    // Has role → redirect to correct dashboard
+    if (role && !hasRedirected.current) {
+      hasRedirected.current = true;
+      const target = ROLE_DASHBOARD_MAP[role] || '/dashboard/teacher';
+      router.replace(target);
+    }
+  }, [user, role, initializing, loading, router]);
+
+  const handleRetry = () => {
+    window.location.reload();
+  };
+
+  // Error from auth timeout
+  if (error) {
+    return (
+      <LoadingScreen
+        error={error}
+        onRetry={handleRetry}
+      />
+    );
+  }
+
+  // Still loading
+  if (initializing || loading) {
+    return (
+      <LoadingScreen
+        message="Redirecionando..."
+        onRetry={handleRetry}
+      />
+    );
+  }
 
   // Perfil não encontrado no banco
-  if (!loading && user && !role) {
+  if (user && !role) {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-gray-50 text-center p-4">
         <div className="max-w-sm space-y-4">
@@ -40,12 +85,11 @@ export default function DashboardPage() {
     );
   }
 
+  // Waiting for redirect
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-50">
-      <div className="flex flex-col items-center gap-3">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-800 border-t-transparent" />
-        <p className="text-sm text-gray-500">Redirecionando...</p>
-      </div>
-    </div>
+    <LoadingScreen
+      message="Redirecionando..."
+      onRetry={handleRetry}
+    />
   );
 }

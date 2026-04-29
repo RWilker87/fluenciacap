@@ -24,7 +24,7 @@ const schema = z.object({
   schoolId: z.string().optional(),
   classroomIds: z.array(z.string()).optional(),
 }).refine((data) => {
-  if (data.role !== 'admin' && !data.schoolId) return false;
+  if (!data.schoolId) return false;
   return true;
 }, {
   message: 'Escola é obrigatória',

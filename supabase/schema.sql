@@ -46,6 +46,19 @@ CREATE TABLE IF NOT EXISTS public.coordinator_classrooms (
   UNIQUE(coordinator_id, classroom_id)
 );
 
+-- 6. Tabela de avaliações (Fluência Leitora)
+CREATE TABLE IF NOT EXISTS public.evaluations (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  student_id       UUID NOT NULL REFERENCES public.students(id) ON DELETE CASCADE,
+  evaluator_id     UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  words_read       INTEGER NOT NULL,
+  errors           INTEGER NOT NULL,
+  words_per_minute INTEGER NOT NULL,
+  accuracy         NUMERIC NOT NULL,
+  observations     TEXT,
+  created_at       TIMESTAMPTZ DEFAULT now()
+);
+
 -- ============================================================
 -- DESABILITAR RLS (modo desenvolvimento)
 -- ============================================================
@@ -54,6 +67,7 @@ ALTER TABLE public.profiles DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.classrooms DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.students DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.coordinator_classrooms DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.evaluations DISABLE ROW LEVEL SECURITY;
 
 -- ============================================================
 -- GRANTS de permissão
@@ -63,6 +77,7 @@ GRANT ALL ON public.schools TO authenticated, anon;
 GRANT ALL ON public.classrooms TO authenticated, anon;
 GRANT ALL ON public.students TO authenticated, anon;
 GRANT ALL ON public.coordinator_classrooms TO authenticated, anon;
+GRANT ALL ON public.evaluations TO authenticated, anon;
 
 -- ============================================================
 -- TRIGGER: criar profile automaticamente ao registrar usuário

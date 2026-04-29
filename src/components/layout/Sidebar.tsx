@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import { authService } from '@/services/authService';
+import { useAuthContext } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -40,8 +39,15 @@ const teacherLinks = [
   { href: '/dashboard/teacher/classrooms', label: 'Minhas Turmas', icon: BookOpen, exact: false },
 ];
 
+const ROLE_LABELS: Record<string, string> = {
+  admin: 'Administrador',
+  gestor: 'Gestor(a)',
+  coordenador: 'Coordenador(a)',
+  professor: 'Professor(a)',
+};
+
 export function Sidebar() {
-  const { profile, role } = useAuth();
+  const { profile, role, signOut } = useAuthContext();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -51,7 +57,7 @@ export function Sidebar() {
   else if (role === 'coordenador') links = coordenadorLinks;
 
   const handleLogout = async () => {
-    await authService.logout();
+    await signOut();
     router.push('/login');
   };
 
@@ -66,7 +72,7 @@ export function Sidebar() {
       {/* User info */}
       <div className="px-6 py-4 border-b border-slate-700">
         <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">
-          {role === 'admin' ? 'Administrador' : 'Professor'}
+          {role ? ROLE_LABELS[role] || role : '...'}
         </p>
         <p className="text-sm font-medium truncate">{profile?.name ?? '...'}</p>
       </div>
